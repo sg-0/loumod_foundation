@@ -29,8 +29,7 @@ class BrailleActuator( Thread ):
 
         
         self.output_config = output_config
-        
-        self.start()
+
         
     def actuate( self ):
         if not self.fifo.empty():

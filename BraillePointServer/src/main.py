@@ -12,8 +12,12 @@ def main():
     fifo = Queue()
     output_config = OutputConfiguration( 2 )
     button_reader = ButtonReader( output_config )
+	button_reader.start()
     braille_actuator = BrailleActuator( fifo, output_config )
+	braille_actuator.start()
     communication_handler = CommunicationHandler( fifo )
+	communication_handler.start()
+	communication_handler.join()
     #test( fifo )
 
 

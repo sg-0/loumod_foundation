@@ -22,8 +22,7 @@ class ButtonReader( Thread ):
     GPIO.setup( self.button_low,  GPIO.IN )
     GPIO.setup( self.button_high, GPIO.IN )
     
-    self.start()
-  
+	
   def run( self ):
     try:
       while True:

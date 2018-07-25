@@ -36,7 +36,6 @@ class CommunicationHandler( Thread ):
                    profiles         = [ SERIAL_PORT_PROFILE ]
         )
 
-        self.start()
         print( "READY FOR CONNECTIONS, RFCOMM channel %d" % port )
     
 
