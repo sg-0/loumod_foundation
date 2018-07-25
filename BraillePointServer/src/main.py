@@ -1,3 +1,5 @@
+#!python3
+
 from queue import Queue
 from time import sleep
 from button_reader import ButtonReader
