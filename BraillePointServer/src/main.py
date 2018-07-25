@@ -1,4 +1,4 @@
-#!python3
+#!/usr/bin/python
 
 from queue import Queue
 from time import sleep
