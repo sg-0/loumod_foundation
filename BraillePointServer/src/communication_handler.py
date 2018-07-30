@@ -14,7 +14,8 @@ class CommunicationHandler( Thread ):
         Thread.__init__( self ) 
 
         self.fifo = fifo
-
+        self.received_data = False
+		
         self.server_sock=BluetoothSocket( RFCOMM )
         self.server_sock.bind( ("",PORT_ANY) )
         self.server_sock.listen( 0 )
@@ -69,12 +70,14 @@ class CommunicationHandler( Thread ):
 
                     if len( data ) <= 0: break
                     if len(data) == 18:
+                        self.received_data = True
+
                         screen_data = data[5:17]
 
                         self.fifo_append( screen_data )
                         print(" ")
 
-                    if self.fifo.empty():
+                    if self.received_data and self.fifo.empty():
                         self.getMoreScreenContent()
 
                     if data == b'\x02\x00\x04SI\x03':
@@ -84,7 +87,7 @@ class CommunicationHandler( Thread ):
                 pass
 
             print("socket closed")
-
+            self.received_data = False
             self.client_sock.close()
 
         # Close the Socket
