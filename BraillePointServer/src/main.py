@@ -17,7 +17,6 @@ def main():
     braille_actuator.start()
     communication_handler = CommunicationHandler( fifo )
     communication_handler.start()
-    communication_handler.join()
     #test( fifo )
 
 

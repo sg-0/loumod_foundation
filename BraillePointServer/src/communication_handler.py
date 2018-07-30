@@ -13,14 +13,7 @@ class CommunicationHandler( Thread ):
     def __init__( self, fifo = Queue() ): 
         Thread.__init__( self ) 
 
-        subprocess.call( [ 'sudo', 'hciconfig', 'hci0', 'up' ] )
-        subprocess.call( [ 'sudo', 'hciconfig', 'hci0', 'sspmode','1' ] )
-        subprocess.call( [ 'sudo', 'hciconfig', 'hci0', 'piscan' ] )
-        subprocess.call( [ 'sudo', 'hciconfig', 'hci0', 'name', 'BraillePointServer' ] )
-        subprocess.call( [ 'sudo', 'bluetooth-agent','1234' ] )
-        
         self.fifo = fifo
-        self.received_data = False
 
         self.server_sock=BluetoothSocket( RFCOMM )
         self.server_sock.bind( ("",PORT_ANY) )
@@ -29,7 +22,7 @@ class CommunicationHandler( Thread ):
         port = self.server_sock.getsockname()[1]
 
         uuid = "00001101-0000-1000-8000-00805F9B34FB"
-        
+
         advertise_service( self.server_sock, "BRAILLE_RFCOMM_SERVER",
                    service_id       = uuid,
                    service_classes  = [ uuid, SERIAL_PORT_CLASS ],
@@ -37,7 +30,6 @@ class CommunicationHandler( Thread ):
         )
 
         print( "READY FOR CONNECTIONS, RFCOMM channel %d" % port )
-    
 
     def authenticate( self ):
         self.client_sock.send( "\002\000\rSNesys12-2\000\003" )
@@ -62,37 +54,29 @@ class CommunicationHandler( Thread ):
     def getMoreScreenContent( self ):
         self.client_sock.send( "\002\000\bKC\002\000\000\000\003" )
         self.client_sock.send( "\002\000\bKC\000\000\000\000\003" )
-    
+
     def run( self ):
         while True:
 
             self.client_sock, self.client_info = self.server_sock.accept()
-            
+
             print( "INBOUND CONNECTION ", self.client_info )
 
             try:
                 while True:
 
                     data = self.client_sock.recv( 1024 )
-                    
-                    if len( data ) == 0: break
-                    
-                    try:
-                        if len(data) == 18:
-                            self.received_data = True
 
-                            screen_data = data[5:17]
+                    if len( data ) <= 0: break
+                    if len(data) == 18:
+                        screen_data = data[5:17]
 
-                            self.fifo_append(screen_data)
-                            print(" ")
-                            
-                        if self.received_data and self.fifo.qsize() < 3:
-                            self.getMoreScreenContent()
+                        self.fifo_append( screen_data )
+                        print(" ")
 
-                    except:
-                        print("wrong type")	
-                        pass		
-                    
+                    if self.fifo.empty():
+                        self.getMoreScreenContent()
+
                     if data == b'\x02\x00\x04SI\x03':
                         self.authenticate()
 
@@ -101,10 +85,10 @@ class CommunicationHandler( Thread ):
 
             print("socket closed")
 
-            self.received_data = False
             self.client_sock.close()
 
         # Close the Socket
+        self.receive_data = False
         self.server_sock.close()
 
 def main():
