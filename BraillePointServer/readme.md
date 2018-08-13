@@ -22,8 +22,8 @@ sudo python3 main.py
 
 The hardest part of this is getting the server installed and running. If you struggle to get the bluetooth to work, maybe this will help:
 
-*This guide helped me allot, original post: [Bluetooth Setup](http://blog.davidvassallo.me/2014/05/11/android-linux-raspberry-pi-bluetooth-communication/)*
-> There are plenty of guides in the internet on how to get bluetooth working, but the only method that worked consistently for me is the following:
+*This guide helped me a lot, original post: [Bluetooth Setup](http://blog.davidvassallo.me/2014/05/11/android-linux-raspberry-pi-bluetooth-communication/)*
+> There are plenty of guides on the internet on how to get bluetooth working, but the only method that worked consistently for me is the following:
 > Disable bluetooth pnat support as there seems to be a bug which stops proper operation with pnat enabled. Full details can be found here:  
 > https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=690749
 
@@ -35,7 +35,7 @@ DisablePlugins = pnat
 
 ### Permissions issues
 
-This has been reported as helpfull for sorting out permissions issues on Ubuntu 15.10. Thanks @jachym for providing the link:
+This has been reported as helpful for sorting out permissions issues on Ubuntu 15.10. Thanks @jachym for providing the link:
 https://code.google.com/p/pybluez/issues/detail?id=62
 
 ```shell
