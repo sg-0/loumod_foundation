@@ -7,10 +7,10 @@ this file is under construction
 http://brltty.app/download.html#android
 
 ## Server installation
-
+````bash
 sudo apt-get install bluez python3-bluez xdotool
 sudo apt install python3-rpi.gpio
-
+````
 ## Run Server
 
 ```
